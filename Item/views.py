@@ -43,9 +43,12 @@ class CustomUserPermissionOfUserPostPatchPut(BasePermission):
 
 @api_view(('POST',))
 def login(request):
+    print("{0} {1} {2}".format(request.POST.get('username'), request.POST.get('password'), request.POST.get('email')))
     user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
     if user is None:
         return Response({'error': 'true', 'message': 'Invalid parameters'})
+    if Token.objects.filter(user=user):
+        Token.objects.get(user=user).delete()
     token, created = Token.objects.get_or_create(user=user)
     return Response({
         'token': token.key,
@@ -55,6 +58,7 @@ def login(request):
 
 @api_view(('POST',))
 def signup(request):
+    print("{0} {1} {2}".format(request.POST.get('username'), request.POST.get('password'), request.POST.get('email')))
     if not request.POST.get('username') \
             or not request.POST.get('password') \
             or not request.POST.get('email') \
@@ -147,8 +151,3 @@ class DetailsMessage(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
-
-# class ListUser(generics.ListCreateAPIView):
-#     permission_classes = (CustomUserPermissionOfUserPostPatchPut,)
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer

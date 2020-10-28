@@ -43,7 +43,7 @@ class ItemImage(models.Model):
     image = models.ImageField(upload_to='item/image')
 
     def __str__(self):
-        return self.item_id
+        return self.item_id.name
 
 
 class Conversation(models.Model):
