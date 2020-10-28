@@ -16,9 +16,25 @@ from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework.authtoken.views import ObtainAuthToken
 # from rest_framework.authtoken.models import I
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, CustomUserPermissionOfUserPostPatchPut
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, BasePermission
+
 
 # from rest_framework.permissions import T
+
+class CustomUserPermissionOfUserPostPatchPut(BasePermission):
+    """
+    The request is authenticated as a user, or is a read-only request.
+    """
+
+    def has_permission(self, request, view):
+        if request.method not in SAFE_METHODS and request.POST.get('user_id') and request.POST.get('user_id') != str(
+                request.user.id):
+            return False
+        return bool(
+            request.method in SAFE_METHODS or
+            request.user and
+            request.user.is_authenticated
+        )
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -111,7 +127,6 @@ class DetailsMessage(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
-
 
 # class ListUser(generics.ListCreateAPIView):
 #     permission_classes = (CustomUserPermissionOfUserPostPatchPut,)
