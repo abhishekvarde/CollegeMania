@@ -18,8 +18,10 @@ from rest_framework.authtoken.views import ObtainAuthToken
 # from rest_framework.authtoken.models import I
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, BasePermission
 
-
 # from rest_framework.permissions import T
+
+SAFE_METHODS = ('GET', 'HEAD', 'OPTIONS')
+
 
 class CustomUserPermissionOfUserPostPatchPut(BasePermission):
     """
