@@ -17,7 +17,6 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('api-token-auth/', CustomAuthToken.as_view()),
     path('', ListItem.as_view()),
     path('item', ListItem.as_view()),
     path('item/<int:pk>/', DetailsItem.as_view()),
