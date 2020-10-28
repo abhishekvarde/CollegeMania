@@ -93,8 +93,8 @@ class DetailsItem(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ItemSerializer
 
 
-class ListItemCategory(generics.ListCreateAPIView):
-    permission_classes = (IsAdminUser,)
+class ListItemCategory(generics.ListAPIView):
+    permission_classes = (CustomUserPermissionOfUserPostPatchPut,)
     queryset = ItemCategory.objects.all()
     serializer_class = ItemCategorySerializer
 
