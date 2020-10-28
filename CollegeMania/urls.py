@@ -17,11 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from Item.views import ListUser, CustomAuthToken
+from Item.views import ListUser, login, signup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('Item/', include('Item.urls')),
-    path('login_signup', ListUser.as_view()),
-    path('api-token-auth/', CustomAuthToken.as_view()),
+    path('signup', signup),
+    path('login', login),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

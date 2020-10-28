@@ -7,16 +7,18 @@ from django.contrib.auth.models import User
 from .serializer import *
 from .models import *
 from django.http import Http404
-# from .models import Profile
 from rest_framework.authtoken.models import Token
-
 from rest_framework import decorators
 from rest_framework import parsers
 from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework.authtoken.views import ObtainAuthToken
-# from rest_framework.authtoken.models import I
+from rest_framework import viewsets
+from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, BasePermission
+from rest_framework.decorators import api_view, permission_classes, renderer_classes
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
+from django.views.decorators.csrf import csrf_exempt
 
 # from rest_framework.permissions import T
 
@@ -39,21 +41,37 @@ class CustomUserPermissionOfUserPostPatchPut(BasePermission):
         )
 
 
-class CustomAuthToken(ObtainAuthToken):
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user': UserSerializer(user).data
-        })
+@api_view(('POST',))
+def login(request):
+    user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
+    if user is None:
+        return Response({'error': 'true', 'message': 'Invalid parameters'})
+    token, created = Token.objects.get_or_create(user=user)
+    return Response({
+        'token': token.key,
+        'user': UserSerializer(user).data
+    })
 
 
-class ListUser(generics.ListCreateAPIView):
+@api_view(('POST',))
+def signup(request):
+    if not request.POST.get('username') \
+            or not request.POST.get('password') \
+            or not request.POST.get('email') \
+            or User.objects.filter(username=request.POST.get('username')) \
+            or User.objects.filter(email=request.POST.get('email')):
+        return Response({'error': 'true', 'message': 'Invalid parameters or already present'})
+    user = User.objects.create_user(username=request.POST.get('username'), email=request.POST.get('email'))
+    user.set_password(request.POST.get('password'))
+    user.save()
+    token, created = Token.objects.get_or_create(user=user)
+    return Response({
+        'token': token.key,
+        'user': UserSerializer(user).data
+    })
+
+
+class ListUser(generics.CreateAPIView):
     # permission_classes = (CustomUserPermissionOfUserPostPatchPut,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
