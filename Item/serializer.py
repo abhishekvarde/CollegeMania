@@ -39,6 +39,13 @@ class ItemSerializer(serializers.ModelSerializer):
     item_images = ItemImageSerializer(many=True, read_only=True)
     category_all_items = ItemCategorySerializer(read_only=True)
 
+    def to_representation(self, instance):
+        data = super(ItemSerializer, self).to_representation(instance)
+        data['category'] = ItemCategorySerializer(ItemCategory.objects.get(id=data['category_id'])).data
+        # for d in data:
+        print(data)
+        return data
+
     class Meta:
         model = Item
         exclude = ()

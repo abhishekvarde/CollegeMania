@@ -19,6 +19,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, B
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
 
 # from rest_framework.permissions import T
 
@@ -46,7 +47,7 @@ def login(request):
     print("{0} {1} {2}".format(request.POST.get('username'), request.POST.get('password'), request.POST.get('email')))
     user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
     if user is None:
-        return Response({'error': 'true', 'message': 'Invalid parameters'})
+        return Response({'error': 'true', 'message': 'Invalid parameters'}, status=status.HTTP_401_UNAUTHORIZED)
     if Token.objects.filter(user=user):
         Token.objects.get(user=user).delete()
     token, created = Token.objects.get_or_create(user=user)
@@ -64,9 +65,16 @@ def signup(request):
             or not request.POST.get('email') \
             or User.objects.filter(username=request.POST.get('username')) \
             or User.objects.filter(email=request.POST.get('email')):
-        return Response({'error': 'true', 'message': 'Invalid parameters or already present'})
+        return Response({
+            'error': 'true',
+            'message': 'Invalid parameters or already present'
+        }, status=status.HTTP_401_UNAUTHORIZED)
     user = User.objects.create_user(username=request.POST.get('username'), email=request.POST.get('email'))
     user.set_password(request.POST.get('password'))
+    if request.POST.get('first_name'):
+        user.first_name = request.POST.get('first_name')
+    if request.POST.get('last_name'):
+        user.last_name = request.POST.get('last_name')
     user.save()
     token, created = Token.objects.get_or_create(user=user)
     return Response({
