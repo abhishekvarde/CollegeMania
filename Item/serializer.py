@@ -79,4 +79,4 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         # exclude = ()
-        fields = ['username', 'first_name', 'last_name', 'email', 'uploader']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'uploader']
