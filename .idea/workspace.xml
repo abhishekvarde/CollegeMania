@@ -4,8 +4,6 @@
     <list default="true" id="a4e6a83a-499a-4b07-9732-59d798b57a05" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/../PG/PG/Assingnment/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Item/serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Item/serializer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Item/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Item/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -62,10 +60,11 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="221" y="89" key="SettingsEditor/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1603877231865" />
-    <state x="397" y="282" key="com.intellij.ide.util.TipDialog" timestamp="1603958527985">
+    <state x="397" y="282" key="com.intellij.ide.util.TipDialog" timestamp="1604039148228">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="397" y="282" key="com.intellij.ide.util.TipDialog/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1603958527985" />
+    <state x="397" y="282" key="com.intellij.ide.util.TipDialog/0.0.1440.900@0.0.1440.900" timestamp="1604039148228" />
     <state x="482" y="88" key="refactoring.ChangeSignatureDialog" timestamp="1603884142853">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
