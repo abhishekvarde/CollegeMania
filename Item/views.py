@@ -159,3 +159,23 @@ class DetailsMessage(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+
+
+class DetailsItemWithCampusId(generics.RetrieveAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+
+    def get(self, request, *args, **kwargs):
+        instance = Item.objects.filter(campus_id=self.kwargs['pk'])
+        serializer = ItemSerializer(instance, many=True)
+        return Response(serializer.data)
+
+
+class DetailsMyItems(generics.RetrieveAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+
+    def get(self, request, *args, **kwargs):
+        instance = Item.objects.filter(user_id=self.kwargs['pk'])
+        serializer = ItemSerializer(instance, many=True)
+        return Response(serializer.data)

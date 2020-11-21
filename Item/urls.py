@@ -30,4 +30,6 @@ urlpatterns = [
     path('conversation/<int:pk>/', DetailsConversation.as_view()),
     path('message', ListMessage.as_view()),
     path('message/<int:pk>/', DetailsMessage.as_view()),
+    path('item_by_campus_id/<int:pk>/', DetailsItemWithCampusId.as_view()),
+    path('my_items/<int:pk>/', DetailsMyItems.as_view()),
 ]
