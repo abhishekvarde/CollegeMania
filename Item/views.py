@@ -20,6 +20,7 @@ from rest_framework.decorators import api_view, permission_classes, renderer_cla
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
+from datetime import datetime, timedelta
 
 # from rest_framework.permissions import T
 
@@ -91,7 +92,7 @@ class ListUser(generics.CreateAPIView):
 
 class ListItem(generics.ListCreateAPIView):
     permission_classes = (CustomUserPermissionOfUserPostPatchPut,)
-    queryset = Item.objects.filter(status_sold=False)
+    queryset = Item.objects.filter(status_sold=False, date_posted__gte=datetime.now() - timedelta(days=15))
     serializer_class = ItemSerializer
 
 
